@@ -1,0 +1,4 @@
+praw
+pyyaml
+psycopg2
+requests

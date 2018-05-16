@@ -1,0 +1,4 @@
+*.env
+remote.yaml
+.idea
+*.pyc

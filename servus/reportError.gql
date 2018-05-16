@@ -1,0 +1,5 @@
+mutation {
+	reportError(errorMessage: "%s", date: "%s", nodeId:"%s"){
+		ok
+	}
+}

@@ -1,0 +1,6 @@
+mutation {
+	newNode(programName: "%s",version: "%s",nodeName:"%s"){
+		ok
+		id
+	}
+}

@@ -1,0 +1,5 @@
+query {
+  getResources(n: %d, collection: "%s", id: "%s"){
+    name
+  }
+}

@@ -1,0 +1,8 @@
+mutation {
+	newReport(
+		nodeName: "%s",
+		report: "%s"
+	){
+		ok
+	}
+}
