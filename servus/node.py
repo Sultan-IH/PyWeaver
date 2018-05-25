@@ -60,6 +60,7 @@ class Node:
             self.hourly_post_count = 0
 
 
+
 def make_request(address, query: str):
     r = requests.post(address, json={"query": query})
     if r.status_code != 200:
