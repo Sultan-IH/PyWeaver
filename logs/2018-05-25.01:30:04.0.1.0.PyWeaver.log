@@ -1,0 +1,42 @@
+2018-05-25 01:30:04,213 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 01:30:04,232 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 72
+2018-05-25 01:30:04,234 - root - INFO - registered with Servus with id: [f767dfeca1164dacbbf42f5fb67f5956]
+2018-05-25 01:30:04,238 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 01:30:04,256 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 144
+2018-05-25 01:30:04,256 - root - INFO - got tasks: ethereum Bitcoin crypto CryptoCurrency NEO altcoin
+2018-05-25 01:30:04,575 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/ethereum/comments/
+2018-05-25 01:30:04,575 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:04,575 - prawcore - DEBUG - Params: {'before': None, 'limit': 100, 'raw_json': 1}
+2018-05-25 01:30:04,584 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.reddit.com
+2018-05-25 01:30:05,086 - urllib3.connectionpool - DEBUG - https://www.reddit.com:443 "POST /api/v1/access_token HTTP/1.1" 200 117
+2018-05-25 01:30:05,093 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): oauth.reddit.com
+2018-05-25 01:30:05,920 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/ethereum/comments/?limit=100&raw_json=1 HTTP/1.1" 200 29688
+2018-05-25 01:30:05,926 - prawcore - DEBUG - Response: 200 (29688 bytes)
+2018-05-25 01:30:06,416 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/ethereum/comments/
+2018-05-25 01:30:06,416 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:06,417 - prawcore - DEBUG - Params: {'before': 't1_dzj6gk6', 'limit': 100, 'raw_json': 1}
+2018-05-25 01:30:07,063 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/ethereum/comments/?before=t1_dzj6gk6&limit=100&raw_json=1 HTTP/1.1" 200 104
+2018-05-25 01:30:07,064 - prawcore - DEBUG - Response: 200 (104 bytes)
+2018-05-25 01:30:08,070 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/ethereum/comments/
+2018-05-25 01:30:08,070 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:08,070 - prawcore - DEBUG - Params: {'before': None, 'limit': 99, 'raw_json': 1}
+2018-05-25 01:30:08,659 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/ethereum/comments/?limit=99&raw_json=1 HTTP/1.1" 200 29487
+2018-05-25 01:30:08,666 - prawcore - DEBUG - Response: 200 (29487 bytes)
+2018-05-25 01:30:10,657 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/ethereum/comments/
+2018-05-25 01:30:10,657 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:10,657 - prawcore - DEBUG - Params: {'before': None, 'limit': 98, 'raw_json': 1}
+2018-05-25 01:30:11,523 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/ethereum/comments/?limit=98&raw_json=1 HTTP/1.1" 200 29077
+2018-05-25 01:30:11,526 - prawcore - DEBUG - Response: 200 (29077 bytes)
+2018-05-25 01:30:15,463 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/ethereum/comments/
+2018-05-25 01:30:15,463 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:15,463 - prawcore - DEBUG - Params: {'before': None, 'limit': 97, 'raw_json': 1}
+2018-05-25 01:30:16,243 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/ethereum/comments/?limit=97&raw_json=1 HTTP/1.1" 200 28807
+2018-05-25 01:30:16,247 - prawcore - DEBUG - Response: 200 (28807 bytes)
+2018-05-25 01:30:24,096 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/ethereum/comments/
+2018-05-25 01:30:24,096 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:24,096 - prawcore - DEBUG - Params: {'before': None, 'limit': 96, 'raw_json': 1}
+2018-05-25 01:30:25,069 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/ethereum/comments/?limit=96&raw_json=1 HTTP/1.1" 200 27300
+2018-05-25 01:30:25,071 - prawcore - DEBUG - Response: 200 (27300 bytes)
+2018-05-25 01:30:28,796 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 01:30:28,809 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 35
+2018-05-25 01:30:28,810 - root - INFO - Node died gracefully

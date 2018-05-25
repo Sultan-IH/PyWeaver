@@ -9,7 +9,7 @@ def init_logs():
     config = get_config()
     logfile = "./logs/" + date + "." + config['version'] + "." + config['name'] + ".log"
 
-    logging.basicConfig(filename=logfile, level=logging.DEBUG,
+    logging.basicConfig(filename=logfile, level=logging.INFO,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 

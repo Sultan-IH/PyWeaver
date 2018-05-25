@@ -1,0 +1,48 @@
+2018-05-25 01:32:53,508 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 01:32:53,526 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 72
+2018-05-25 01:32:53,527 - root - INFO - registered with Servus with id: [55c90c2245a847cea40cae45a3a146ef]
+2018-05-25 01:32:53,529 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 01:32:53,550 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 144
+2018-05-25 01:32:53,555 - root - INFO - got tasks: ethereum Bitcoin crypto CryptoCurrency NEO altcoin
+2018-05-25 01:32:54,075 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/ethereum/comments/
+2018-05-25 01:32:54,075 - prawcore - DEBUG - Data: None
+2018-05-25 01:32:54,075 - prawcore - DEBUG - Params: {'before': None, 'limit': 100, 'raw_json': 1}
+2018-05-25 01:32:54,076 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/Bitcoin/comments/
+2018-05-25 01:32:54,077 - prawcore - DEBUG - Data: None
+2018-05-25 01:32:54,077 - prawcore - DEBUG - Params: {'before': None, 'limit': 100, 'raw_json': 1}
+2018-05-25 01:32:54,078 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/crypto/comments/
+2018-05-25 01:32:54,079 - prawcore - DEBUG - Data: None
+2018-05-25 01:32:54,079 - prawcore - DEBUG - Params: {'before': None, 'limit': 100, 'raw_json': 1}
+2018-05-25 01:32:54,082 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/CryptoCurrency/comments/
+2018-05-25 01:32:54,082 - prawcore - DEBUG - Data: None
+2018-05-25 01:32:54,082 - prawcore - DEBUG - Params: {'before': None, 'limit': 100, 'raw_json': 1}
+2018-05-25 01:32:54,084 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.reddit.com
+2018-05-25 01:32:54,084 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): www.reddit.com
+2018-05-25 01:32:54,084 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/NEO/comments/
+2018-05-25 01:32:54,084 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (3): www.reddit.com
+2018-05-25 01:32:54,086 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (4): www.reddit.com
+2018-05-25 01:32:54,086 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/altcoin/comments/
+2018-05-25 01:32:54,086 - prawcore - DEBUG - Data: None
+2018-05-25 01:32:54,087 - prawcore - DEBUG - Data: None
+2018-05-25 01:32:54,087 - prawcore - DEBUG - Params: {'before': None, 'limit': 100, 'raw_json': 1}
+2018-05-25 01:32:54,087 - prawcore - DEBUG - Params: {'before': None, 'limit': 100, 'raw_json': 1}
+2018-05-25 01:32:54,090 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (5): www.reddit.com
+2018-05-25 01:32:54,091 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (6): www.reddit.com
+2018-05-25 01:32:54,581 - urllib3.connectionpool - DEBUG - https://www.reddit.com:443 "POST /api/v1/access_token HTTP/1.1" 200 117
+2018-05-25 01:32:54,584 - urllib3.connectionpool - DEBUG - https://www.reddit.com:443 "POST /api/v1/access_token HTTP/1.1" 200 117
+2018-05-25 01:32:54,588 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): oauth.reddit.com
+2018-05-25 01:32:54,589 - urllib3.connectionpool - DEBUG - https://www.reddit.com:443 "POST /api/v1/access_token HTTP/1.1" 200 117
+2018-05-25 01:32:54,589 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): oauth.reddit.com
+2018-05-25 01:32:54,592 - urllib3.connectionpool - DEBUG - https://www.reddit.com:443 "POST /api/v1/access_token HTTP/1.1" 200 117
+2018-05-25 01:32:54,595 - urllib3.connectionpool - DEBUG - https://www.reddit.com:443 "POST /api/v1/access_token HTTP/1.1" 200 117
+2018-05-25 01:32:54,598 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (3): oauth.reddit.com
+2018-05-25 01:32:54,599 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (4): oauth.reddit.com
+2018-05-25 01:32:54,599 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (5): oauth.reddit.com
+2018-05-25 01:32:54,611 - urllib3.connectionpool - DEBUG - https://www.reddit.com:443 "POST /api/v1/access_token HTTP/1.1" 200 117
+2018-05-25 01:32:54,619 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (6): oauth.reddit.com
+2018-05-25 01:32:55,201 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/ethereum/comments/?limit=100&raw_json=1 HTTP/1.1" 200 29504
+2018-05-25 01:32:55,212 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/altcoin/comments/?limit=100&raw_json=1 HTTP/1.1" 200 23416
+2018-05-25 01:32:55,216 - prawcore - DEBUG - Response: 200 (29504 bytes)
+2018-05-25 01:32:55,234 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/NEO/comments/?limit=100&raw_json=1 HTTP/1.1" 200 22064
+2018-05-25 01:32:55,235 - prawcore - DEBUG - Response: 200 (23416 bytes)
+2018-05-25 01:32:55,251 - prawcore - DEBUG - Response: 200 (22064 bytes)

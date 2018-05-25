@@ -1,0 +1,62 @@
+2018-05-25 01:30:31,391 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 01:30:31,405 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 72
+2018-05-25 01:30:31,406 - root - INFO - registered with Servus with id: [9c5d1c4ab73b4b1bb8d87519387ded7c]
+2018-05-25 01:30:31,410 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 01:30:31,423 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 153
+2018-05-25 01:30:31,424 - root - INFO - got tasks: CryptoMarkets ethtrader Iota CryptoMoonShots btc BlockChain
+2018-05-25 01:30:31,627 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/CryptoMarkets/comments/
+2018-05-25 01:30:31,627 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:31,627 - prawcore - DEBUG - Params: {'before': None, 'limit': 100, 'raw_json': 1}
+2018-05-25 01:30:31,636 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.reddit.com
+2018-05-25 01:30:32,152 - urllib3.connectionpool - DEBUG - https://www.reddit.com:443 "POST /api/v1/access_token HTTP/1.1" 200 117
+2018-05-25 01:30:32,156 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): oauth.reddit.com
+2018-05-25 01:30:33,083 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/CryptoMarkets/comments/?limit=100&raw_json=1 HTTP/1.1" 200 18839
+2018-05-25 01:30:33,087 - prawcore - DEBUG - Response: 200 (18839 bytes)
+2018-05-25 01:30:33,597 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/CryptoMarkets/comments/
+2018-05-25 01:30:33,597 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:33,597 - prawcore - DEBUG - Params: {'before': 't1_dzj61iw', 'limit': 100, 'raw_json': 1}
+2018-05-25 01:30:34,193 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/CryptoMarkets/comments/?before=t1_dzj61iw&limit=100&raw_json=1 HTTP/1.1" 200 104
+2018-05-25 01:30:34,195 - prawcore - DEBUG - Response: 200 (104 bytes)
+2018-05-25 01:30:35,196 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/CryptoMarkets/comments/
+2018-05-25 01:30:35,196 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:35,197 - prawcore - DEBUG - Params: {'before': None, 'limit': 99, 'raw_json': 1}
+2018-05-25 01:30:36,034 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/CryptoMarkets/comments/?limit=99&raw_json=1 HTTP/1.1" 200 18507
+2018-05-25 01:30:36,036 - prawcore - DEBUG - Response: 200 (18507 bytes)
+2018-05-25 01:30:38,056 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/CryptoMarkets/comments/
+2018-05-25 01:30:38,056 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:38,056 - prawcore - DEBUG - Params: {'before': None, 'limit': 98, 'raw_json': 1}
+2018-05-25 01:30:38,746 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/CryptoMarkets/comments/?limit=98&raw_json=1 HTTP/1.1" 200 18384
+2018-05-25 01:30:38,748 - prawcore - DEBUG - Response: 200 (18384 bytes)
+2018-05-25 01:30:42,855 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/CryptoMarkets/comments/
+2018-05-25 01:30:42,855 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:42,855 - prawcore - DEBUG - Params: {'before': None, 'limit': 97, 'raw_json': 1}
+2018-05-25 01:30:43,497 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/CryptoMarkets/comments/?limit=97&raw_json=1 HTTP/1.1" 200 18284
+2018-05-25 01:30:43,499 - prawcore - DEBUG - Response: 200 (18284 bytes)
+2018-05-25 01:30:51,601 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/CryptoMarkets/comments/
+2018-05-25 01:30:51,601 - prawcore - DEBUG - Data: None
+2018-05-25 01:30:51,601 - prawcore - DEBUG - Params: {'before': None, 'limit': 96, 'raw_json': 1}
+2018-05-25 01:30:52,283 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/CryptoMarkets/comments/?limit=96&raw_json=1 HTTP/1.1" 200 18108
+2018-05-25 01:30:52,285 - prawcore - DEBUG - Response: 200 (18108 bytes)
+2018-05-25 01:31:08,443 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/CryptoMarkets/comments/
+2018-05-25 01:31:08,443 - prawcore - DEBUG - Data: None
+2018-05-25 01:31:08,444 - prawcore - DEBUG - Params: {'before': None, 'limit': 95, 'raw_json': 1}
+2018-05-25 01:31:09,182 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/CryptoMarkets/comments/?limit=95&raw_json=1 HTTP/1.1" 200 18007
+2018-05-25 01:31:09,185 - prawcore - DEBUG - Response: 200 (18007 bytes)
+2018-05-25 01:31:25,403 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/CryptoMarkets/comments/
+2018-05-25 01:31:25,403 - prawcore - DEBUG - Data: None
+2018-05-25 01:31:25,403 - prawcore - DEBUG - Params: {'before': None, 'limit': 94, 'raw_json': 1}
+2018-05-25 01:31:26,009 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/CryptoMarkets/comments/?limit=94&raw_json=1 HTTP/1.1" 200 17892
+2018-05-25 01:31:26,011 - prawcore - DEBUG - Response: 200 (17892 bytes)
+2018-05-25 01:31:42,309 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/CryptoMarkets/comments/
+2018-05-25 01:31:42,309 - prawcore - DEBUG - Data: None
+2018-05-25 01:31:42,309 - prawcore - DEBUG - Params: {'before': None, 'limit': 93, 'raw_json': 1}
+2018-05-25 01:31:42,933 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/CryptoMarkets/comments/?limit=93&raw_json=1 HTTP/1.1" 200 17696
+2018-05-25 01:31:42,935 - prawcore - DEBUG - Response: 200 (17696 bytes)
+2018-05-25 01:31:59,043 - prawcore - DEBUG - Fetching: GET https://oauth.reddit.com/r/CryptoMarkets/comments/
+2018-05-25 01:31:59,044 - prawcore - DEBUG - Data: None
+2018-05-25 01:31:59,044 - prawcore - DEBUG - Params: {'before': None, 'limit': 92, 'raw_json': 1}
+2018-05-25 01:31:59,871 - urllib3.connectionpool - DEBUG - https://oauth.reddit.com:443 "GET /r/CryptoMarkets/comments/?limit=92&raw_json=1 HTTP/1.1" 200 17452
+2018-05-25 01:31:59,873 - prawcore - DEBUG - Response: 200 (17452 bytes)
+2018-05-25 01:32:06,550 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 01:32:06,563 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 35
+2018-05-25 01:32:06,564 - root - INFO - Node died gracefully

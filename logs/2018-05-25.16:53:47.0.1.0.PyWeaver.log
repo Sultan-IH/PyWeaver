@@ -1,0 +1,9 @@
+2018-05-25 16:53:47,277 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 16:53:47,293 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 72
+2018-05-25 16:53:47,294 - root - INFO - registered with Servus with id: [cee87c8cd91e40d5b9c6ad7ad3ac0daa]
+2018-05-25 16:53:47,297 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 16:53:47,316 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 144
+2018-05-25 16:53:47,317 - root - INFO - got tasks: ethereum Bitcoin crypto CryptoCurrency NEO altcoin
+2018-05-25 16:53:47,323 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 16:53:47,338 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 35
+2018-05-25 16:53:47,338 - root - INFO - Node died gracefully

@@ -1,0 +1,9 @@
+2018-05-25 01:32:09,572 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 01:32:09,590 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 72
+2018-05-25 01:32:09,591 - root - INFO - registered with Servus with id: [e14c25cf41524395b94ee501e5e362d0]
+2018-05-25 01:32:09,594 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 01:32:09,613 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 153
+2018-05-25 01:32:09,619 - root - INFO - got tasks: CryptoMarkets ethtrader Iota CryptoMoonShots btc BlockChain
+2018-05-25 01:32:10,118 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 159.65.27.43
+2018-05-25 01:32:10,135 - urllib3.connectionpool - DEBUG - http://159.65.27.43:4555 "POST /graphql HTTP/1.1" 200 35
+2018-05-25 01:32:10,136 - root - INFO - Node died gracefully
