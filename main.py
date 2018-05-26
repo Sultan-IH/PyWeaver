@@ -1,7 +1,7 @@
 from RClient import RedditClient
 from DBClient import DBCLient
 from threading import Thread
-import os, atexit, logging, schedule
+import os, atexit, logging, schedule, time
 
 os.environ['NODE_NAME'] = 'Sultan_TEST'
 
@@ -24,9 +24,14 @@ def start(job, db_cli):
 
 
 logging.info(n.jobs[-1]['tasks'])
+
 for job in n.jobs[-1]['tasks']:
     logging.info("Job: " + job)
     new_cli = main_pg.new_cli()
     Thread(target=start, args=(job, new_cli)).start()
 
 schedule.every().hour.do(n.send_report)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
