@@ -17,9 +17,9 @@ atexit.register(main_pg.pool.closeall)
 atexit.register(n.die)
 
 
-def start(job, db_cli):
+def start(job_name, db_cli):
     rcli = RedditClient("./pyweaver.yaml", db_cli)
-    for i in rcli.stream_comments(job):
+    for i in rcli.stream_comments(job_name):
         n.hourly_comment_count += i
 
 

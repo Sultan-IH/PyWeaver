@@ -1,6 +1,6 @@
 mutation {
 	newReport(
-		nodeName: "%s",
+		nodeId: "%s",
 		report: "%s"
 	){
 		ok

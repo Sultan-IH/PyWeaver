@@ -53,11 +53,14 @@ class Node:
         metrics = " <p>Posts Scraped: %d</p> <p>Comments Scraped: %d</p>" % (
             self.hourly_post_count, self.hourly_comment_count)
         report = load_gql('./servus/newReport.gql') % (self._id, metrics)
+        logging.info("report: " + report)
         response = make_request(self.servus_address, report)
         if response['removeNode']['ok']:
             logging.info('sent an hourly report' + metrics)
             self.hourly_comment_count = 0
             self.hourly_post_count = 0
+        else:
+            logging.info("bad response when trying to send a metric report")
 
 
 def make_request(address, query: str):

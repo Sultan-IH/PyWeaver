@@ -2,3 +2,4 @@
 remote.yaml
 .idea
 *.pyc
+logs
