@@ -1,4 +1,5 @@
-import requests, os, logging, json
+import requests, os, logging, atexit, schedule, time
+from datetime import datetime
 from log_setup import get_config, init_logs
 
 
@@ -27,6 +28,7 @@ class Node:
             exit(1)
         self._id = response['newNode']['id']
         logging.info("registered with Servus with id: [%s]", self._id)
+        atexit.register(self.die)
 
     def get_resources(self, collection, n):
         job = {
@@ -49,7 +51,7 @@ class Node:
         if response['removeNode']['ok']:
             logging.info('Node died gracefully')
 
-    def send_report(self):
+    def _send_report(self):
         metrics = " <p>Posts Scraped: %d</p> <p>Comments Scraped: %d</p>" % (
             self.hourly_post_count, self.hourly_comment_count)
         report = load_gql('./servus/newReport.gql') % (self._id, metrics)
@@ -61,6 +63,19 @@ class Node:
             self.hourly_post_count = 0
         else:
             logging.info("bad response when trying to send a metric report")
+
+    def report_wrapper(self):
+        schedule.every(12).hour.do(self._send_report)
+        while True:
+            schedule.run_pending(), time.sleep(1)
+
+    def report_error(self, error):
+        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+        report = load_gql('./servus/newReport.gql') % (error.message, now, self._id)
+        logging.info("error report: " + report)
+        response = make_request(self.servus_address, report)
+        if not response['removeNode']['ok']:
+            logging.info("bad response when trying to send an error report")
 
 
 def make_request(address, query: str):

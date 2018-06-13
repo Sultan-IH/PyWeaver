@@ -3,3 +3,4 @@ remote.yaml
 .idea
 *.pyc
 logs
+.DS_Store
