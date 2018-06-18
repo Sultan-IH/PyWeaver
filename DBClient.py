@@ -86,3 +86,35 @@ class CommentProcess(mp.Process):
             else:
                 self._metrics_queue.put('comment')
                 logger.info("Inserted comment from the " + self.task + " subreddit")
+
+
+class SubmissionProcess(mp.Process):
+    sql_statement = """
+            INSERT INTO reddit_posts 
+            (post_id, author, subreddit, title, ups, num_comments, CreatedUTC, text, permalink)  
+            SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s
+            WHERE NOT EXISTS (
+                SELECT * FROM reddit_posts WHERE post_id = %s
+            )"""
+
+    def __init__(self, task: str, cursor, error_queue: mp.Queue, metrics_queue: mp.Queue):
+        self.task = task
+        self.cursor = cursor
+        self._error_queue = error_queue
+        self._metrics_queue = metrics_queue
+        super().__init__(target=self.run, args=())
+
+    def run(self):
+        logger.info("streaming and inserting submissions from " + self.task)
+        for submission in rc.stream_subreddit_submissions(self.task, self._error_queue):
+            values = (submission.id, str(submission.author), self.task, submission.title,
+                      submission.score, submission.num_comments, submission.created_utc, submission.selftext,
+                      submission.permalink, submission.id)
+            try:
+                self.cursor.execute(self.sql_statement, values)
+            except (pg.IntegrityError, pg.OperationalError) as e:
+                logger.error("Error on executing sql: {0}".format(e))
+                self._error_queue.put(str(e))
+            else:
+                self._metrics_queue.put('submission')
+                logger.info("Inserted submission from the " + self.task + " subreddit")

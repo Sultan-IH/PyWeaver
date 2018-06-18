@@ -1,4 +1,4 @@
 logdir: ./logs/
 name: PyWeaver
 servus_address: http://159.65.27.43:4555
-version: 0.1.6
+version: 0.1.7

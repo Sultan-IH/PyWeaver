@@ -90,13 +90,14 @@ class Node:
             item = queue.get()
             if item == 'comment':
                 comment_count += 1
-            elif item == 'post':
+            elif item == 'submission':
                 post_count += 1
         if IS_PRODUCTION:
             self._send_report(comment_count, post_count)
         else:
             print(f"""
                 num comments: {comment_count}
+                submission count: {post_count}
             """)
         self.run_report_cycle(queue)
 

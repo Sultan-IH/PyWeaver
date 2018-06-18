@@ -1,8 +1,8 @@
 from multiprocessing.dummy import Pool, Queue, Value, Process
 import RedditClient as rc
-from DBClient import CommentProcess, ConnectionPool, insert_comment_dummy
+from DBClient import CommentProcess, ConnectionPool, SubmissionProcess
 from servus.node import Node, wrap_in_process, IS_PRODUCTION
-import logging, os
+import logging, os, time
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ metrics_queue = Queue()
 # error queue
 error_queue = Queue()
 
-# node runs metric collection from queue
+# node runs metric collection from queue, same queue is shared among threads
 wrap_in_process(func=node.run_report_cycle, args=(metrics_queue,))
 
 logger.info("PyWeaver started in " + ("production" if IS_PRODUCTION else "development") + " environment.")
@@ -25,7 +25,8 @@ logger.info("PyWeaver started in " + ("production" if IS_PRODUCTION else "develo
 
 def main():
     # collection of threads reaping posts and comments
-    processes = []
+    comment_processes = []
+    submission_processes = []
 
     conn_manager = ConnectionPool()
 
@@ -36,16 +37,33 @@ def main():
 
     # juicy stuff, spawning a CommentProcessing instance for every sub
     logger.info('creating thread pool for scraping')
+
     for task in node.jobs[-1]['tasks']:
         cursor = next(conn_manager)
-        p = CommentProcess(task, cursor, error_queue, metrics_queue)
-        p.start()
-        processes.append(p)
+        print(task)
+
+        # for each subreddit we want to start a comment process
+        comment_process = CommentProcess(task, cursor, error_queue, metrics_queue)
+        comment_process.start()
+        comment_processes.append(comment_process)
+        print("started comment harvesting")
+
+        # and a submission scraping process
+        cursor = next(conn_manager)
+        submission_process = SubmissionProcess(task, cursor, error_queue, metrics_queue)
+        submission_process.start()
+        submission_processes.append(submission_process)
+        print("started submission harvesting")
 
     # listening for an exception, clean up, repeat
     exception = error_queue.get()
     logger.info("received an exception" + str(exception))
-    # clean up, TODO: figure out how to kill threads
+
+    # most commonly reddit servers can't handle the load, so we just give them some time
+    # (I am sure they are doing their best)
+    time.sleep(10)
+
+    # clean up, TODO: figure out how to kill threads or manage them
     conn_manager.on_exit()
     main()
 
