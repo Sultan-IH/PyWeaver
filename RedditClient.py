@@ -39,3 +39,19 @@ def stream_subreddit_submissions(subname: str, error_queue: Queue) -> Generator:
 
     except Exception as e:
         error_queue.put(str(e))
+
+
+def feed_submission_comments(_id: str, error_queue: Queue) -> Generator:
+    """
+    :param _id: id of the submission in a subreddit
+    :return: traverse breadth, first the comment tree (returns comments)
+    """
+    submission = __reddit__.submission(id=_id)
+    try:
+
+        submission.comments.replace_more(limit=None)
+        for comment in submission.comments.list():
+            yield comment
+
+    except Exception as e:
+        error_queue.put(str(e))

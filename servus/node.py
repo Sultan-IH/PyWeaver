@@ -1,6 +1,5 @@
-import requests, os, logging, atexit, schedule, time
+import requests, os, logging, atexit, schedule, time, yaml
 from datetime import datetime
-from log_setup import get_config, init_logs
 from multiprocessing.dummy import Process, Queue, Value
 from typing import Generator
 
@@ -14,12 +13,13 @@ class Node:
     comment_count = 0
     post_count = 0
 
-    def __init__(self):
-        init_logs()
+    def __init__(self, program_name: str):
+        config = get_config(program_name)
+        init_logs(config)
+
         self.jobs = []
-        self.node_name = os.getenv("NODE_NAME")
-        config = get_config()
-        self.servus_address = config['servus_address'] + '/graphql'
+        self.node_name = os.getenv("NODE_NAME")  # reference to the machine this is running on
+        self.servus_address = os.getenv("SERVUS_ADDRESS") + '/graphql'
         self.program_name = config['name']
         self.version = config['version']
 
@@ -101,7 +101,18 @@ class Node:
             """)
         self.run_report_cycle(queue)
 
-    def _report_error(self, exception: Exception):
+    def run_error_reports(self, error_queue: Queue):
+        """
+        not sure if needed as calling get() will remove the error from error_queue
+        if run in a separate thread, will create race conditions with main
+        :param error_queue: Queue
+        :return:
+        """
+        exception = error_queue.get()  # blocks until error is recieved
+        self._report_error(exception)
+        self.run_error_reports(error_queue)
+
+    def report_error(self, exception: Exception):
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
         report = load_gql('./servus/newReport.gql') % (str(exception), str(now), str(self._id))
         logger.info("error report: " + report)
@@ -126,11 +137,6 @@ def load_gql(file_path: str):
         return file.read()
 
 
-def listen_to_queue(q: Queue) -> Generator:
-    while True:
-        yield q.get()
-
-
 def wrap_in_process(func, args=tuple()):
     print("Running " + func.__name__ + " in a process")
     p = Process(target=func, args=args)
@@ -146,4 +152,24 @@ def listen_val(v: Value):
 
 def listen_queue(q: Queue):
     while True:
-        print("listen_queue: " + str(q.qsize()))
+        print("listen_queue: " + str(q.get()))
+
+
+def get_config(program_name: str) -> dict:
+    with open(program_name + '.config.yaml') as file:
+        try:
+            config = yaml.load(file)
+        except yaml.YAMLError as exc:
+            logger.exception(str(exc))
+            print("get_config got an error" + str(exc)), exit(1)
+        else:
+            return config
+
+
+def init_logs(config):
+    date = datetime.now().strftime("%Y-%m-%d.%H:%M:%S")
+
+    logfile = "./logs/" + date + "." + config['version'] + "." + config['name'] + ".log"
+
+    logging.basicConfig(filename=logfile, level=logging.INFO,
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')

@@ -1,6 +1,6 @@
-from multiprocessing.dummy import Pool, Queue, Value, Process
+from multiprocessing.dummy import Queue, Event
 import RedditClient as rc
-from DBClient import CommentProcess, ConnectionPool, SubmissionProcess
+from DBClient import SubmissionStreamProcess, ConnectionPool, CommentStreamProcess
 from servus.node import Node, wrap_in_process, IS_PRODUCTION
 import logging, os, time
 
@@ -8,13 +8,13 @@ logger = logging.getLogger(__name__)
 
 # Registering with the load distribution server: Servus
 num_subreddits = int(os.getenv("NUM_SUBREDDITS"))
-node = Node()
+node = Node('PyWeaver')
 node.get_resources('subreddits', num_subreddits)
 
 # functions send their progress metrics into the queue
 metrics_queue = Queue()
 
-# error queue
+# error queue, sends
 error_queue = Queue()
 
 # node runs metric collection from queue, same queue is shared among threads
@@ -22,11 +22,12 @@ wrap_in_process(func=node.run_report_cycle, args=(metrics_queue,))
 
 logger.info("PyWeaver started in " + ("production" if IS_PRODUCTION else "development") + " environment.")
 
+stop_work_event = Event()
+
 
 def main():
     # collection of threads reaping posts and comments
-    comment_processes = []
-    submission_processes = []
+    _processes = []
 
     conn_manager = ConnectionPool()
 
@@ -39,32 +40,31 @@ def main():
     logger.info('creating thread pool for scraping')
 
     for task in node.jobs[-1]['tasks']:
-        cursor = next(conn_manager)
-        print(task)
-
-        # for each subreddit we want to start a comment process
-        comment_process = CommentProcess(task, cursor, error_queue, metrics_queue)
-        comment_process.start()
-        comment_processes.append(comment_process)
-        print("started comment harvesting")
-
-        # and a submission scraping process
-        cursor = next(conn_manager)
-        submission_process = SubmissionProcess(task, cursor, error_queue, metrics_queue)
-        submission_process.start()
-        submission_processes.append(submission_process)
-        print("started submission harvesting")
+        # for each subreddit we want to start a comment scraping process and a submission scraping process
+        for Process in [CommentStreamProcess, SubmissionStreamProcess]:
+            cursor = next(conn_manager)
+            _process = Process(task, cursor, error_queue, metrics_queue, stop_work_event)
+            _process.start()
+            _processes.append(_process)
 
     # listening for an exception, clean up, repeat
-    exception = error_queue.get()
+    exception = error_queue.get()  # blocks thread until exception received
     logger.info("received an exception" + str(exception))
+    node.report_error(exception)
+
+    # clean up,
+    stop_work_event.set()  # causes all threads to exit
+
+    for process in _processes:
+        logger.info(f"terminated [{process.task}] thread")
+        process.join()
+
+    conn_manager.on_exit()
+    logger.info("closed all pool connections")
 
     # most commonly reddit servers can't handle the load, so we just give them some time
     # (I am sure they are doing their best)
-    time.sleep(10)
-
-    # clean up, TODO: figure out how to kill threads or manage them
-    conn_manager.on_exit()
+    time.sleep(20)
     main()
 
 

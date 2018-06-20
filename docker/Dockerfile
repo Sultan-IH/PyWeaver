@@ -7,5 +7,5 @@ RUN pip install --no-cache-dir -r /PyWeaver/requirements.txt
 COPY . /PyWeaver
 WORKDIR /PyWeaver
 
-CMD [ "python","main.py" ]
+CMD [ "python", "pyweaver.py" ]
 

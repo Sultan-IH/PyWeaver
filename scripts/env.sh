@@ -4,7 +4,6 @@
 
 # stuff that determines the behavior of the program
 cat ./pyweaver.env | while read line; do
-    echo $line
     export $line
 done
 
