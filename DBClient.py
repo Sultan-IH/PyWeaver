@@ -76,6 +76,10 @@ class CommentStreamProcess(mp.Process):
     def run(self):
         logger.info("streaming and inserting comments from " + self.task)
         for comment in rc.stream_subreddit_comments(self.task, self._error_queue):
+            if self._stop_event.is_set():
+                logger.info(f"{self.task} comment harvesting thread exiting")
+                break  # check if an exception has occurred that caused all threads to stop
+
             values = (comment.id, str(comment.author), comment.body, self.task,
                       comment.score, comment.created_utc, comment.parent_id, comment.id)
             try:
@@ -85,7 +89,7 @@ class CommentStreamProcess(mp.Process):
                 self._error_queue.put(e)
             else:
                 self._metrics_queue.put('comment')
-                logger.info("Inserted comment from the " + self.task + " subreddit")
+                logger.info(f"Inserted [{comment.id}] comment from [{self.task}]")
 
 
 class SubmissionStreamProcess(mp.Process):
@@ -110,6 +114,7 @@ class SubmissionStreamProcess(mp.Process):
         logger.info("streaming and inserting submissions from " + self.task)
         for submission in rc.stream_subreddit_submissions(self.task, self._error_queue):
             if self._stop_event.is_set():
+                logger.info(f"{self.task} submission harvesting thread exiting")
                 break  # check if an exception has occurred that caused all threads to stop
 
             values = (submission.id, str(submission.author), self.task, submission.title,
@@ -122,7 +127,7 @@ class SubmissionStreamProcess(mp.Process):
                 self._error_queue.put(e)
             else:
                 self._metrics_queue.put('submission')
-                logger.info("Inserted submission from the " + self.task + " subreddit")
+                logger.info(f"Inserted [{submission.id}] submission from [{self.task}]")
 
         return  # triggered if stop_event is set
 
