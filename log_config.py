@@ -19,7 +19,7 @@ date = datetime.now().strftime("%Y-%m-%d.%H:%M:%S")
 LOG_BASE = PROGRAM_CONFIG['logdir'] + date + "." + PROGRAM_CONFIG['version'] + "." + PROGRAM_CONFIG['name']
 LOG_FILENAME = LOG_BASE + ".log"
 
-handler = logging.handlers.RotatingFileHandler(LOG_FILENAME, maxBytes=1000000, backupCount=3)
+handler = logging.handlers.RotatingFileHandler(LOG_FILENAME, maxBytes=2000000, backupCount=3)  # max size is 2mb
 handler.setLevel(logging.INFO)  # Set logging level.
 
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')

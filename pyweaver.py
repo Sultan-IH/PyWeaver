@@ -13,7 +13,6 @@ if IS_PRODUCTION:
     sys.stdout = open(STDOUT_FILE, 'wt')
 
 logger = logging.getLogger(__name__)
-logger.addHandler(log_config.handler)
 
 # Registering with the load distribution server: Servus
 num_subreddits = int(os.getenv("NUM_SUBREDDITS"))

@@ -1,10 +1,9 @@
 import requests, os, logging, atexit, schedule, time, yaml
 from datetime import datetime
 from multiprocessing.dummy import Process, Queue, Value
-from log_config import handler
 
 logger = logging.getLogger(__name__)
-logger.addHandler(handler)
+
 IS_PRODUCTION = True if os.getenv("PRODUCTION") == 'TRUE' else False
 
 
