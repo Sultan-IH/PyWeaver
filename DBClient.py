@@ -2,10 +2,11 @@ from psycopg2.pool import ThreadedConnectionPool
 import psycopg2 as pg
 import logging, os, atexit
 import RedditClient as rc
-from typing import Tuple
+from log_config import handler
 import multiprocessing.dummy as mp
 
 logger = logging.getLogger(__name__)
+logger.addHandler(handler)
 
 
 class ConnectionPool:

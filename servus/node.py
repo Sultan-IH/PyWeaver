@@ -1,10 +1,10 @@
 import requests, os, logging, atexit, schedule, time, yaml
 from datetime import datetime
 from multiprocessing.dummy import Process, Queue, Value
-from typing import Generator
+from log_config import handler
 
 logger = logging.getLogger(__name__)
-
+logger.addHandler(handler)
 IS_PRODUCTION = True if os.getenv("PRODUCTION") == 'TRUE' else False
 
 
@@ -13,9 +13,7 @@ class Node:
     comment_count = 0
     post_count = 0
 
-    def __init__(self, program_name: str):
-        config = get_config(program_name)
-        init_logs(config)
+    def __init__(self, config: dict):
 
         self.jobs = []
         self.node_name = os.getenv("NODE_NAME")  # reference to the machine this is running on
@@ -153,23 +151,3 @@ def listen_val(v: Value):
 def listen_queue(q: Queue):
     while True:
         print("listen_queue: " + str(q.get()))
-
-
-def get_config(program_name: str) -> dict:
-    with open(program_name + '.config.yaml') as file:
-        try:
-            config = yaml.load(file)
-        except yaml.YAMLError as exc:
-            logger.exception(str(exc))
-            print("get_config got an error" + str(exc)), exit(1)
-        else:
-            return config
-
-
-def init_logs(config):
-    date = datetime.now().strftime("%Y-%m-%d.%H:%M:%S")
-
-    logfile = "./logs/" + date + "." + config['version'] + "." + config['name'] + ".log"
-
-    logging.basicConfig(filename=logfile, level=logging.INFO,
-                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')

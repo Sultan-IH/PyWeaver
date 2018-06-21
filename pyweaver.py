@@ -1,14 +1,23 @@
-from multiprocessing.dummy import Queue, Event
+import logging, os, time, sys
 import RedditClient as rc
+import log_config  # when imported all the logging variables needed for other modules become available
+
+from multiprocessing.dummy import Queue, Event
 from DBClient import SubmissionStreamProcess, ConnectionPool, CommentStreamProcess
 from servus.node import Node, wrap_in_process, IS_PRODUCTION
-import logging, os, time
+
+PROGRAM_CONFIG = log_config.PROGRAM_CONFIG
+
+if IS_PRODUCTION:
+    STDOUT_FILE = log_config.LOG_BASE + '.stdout'
+    sys.stdout = open(STDOUT_FILE, 'wt')
 
 logger = logging.getLogger(__name__)
+logger.addHandler(log_config.handler)
 
 # Registering with the load distribution server: Servus
 num_subreddits = int(os.getenv("NUM_SUBREDDITS"))
-node = Node('PyWeaver')
+node = Node(PROGRAM_CONFIG)
 node.get_resources('subreddits', num_subreddits)
 
 # functions send their progress metrics into the queue
@@ -49,7 +58,7 @@ def main():
 
     # listening for an exception, clean up, repeat
     exception = error_queue.get()  # blocks thread until exception received
-    logger.info("received an exception" + str(exception))
+    logger.info("received an exception " + str(exception))
     node.report_error(exception)
 
     # clean up,
