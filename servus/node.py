@@ -111,10 +111,10 @@ class Node:
 
     def report_error(self, exception: Exception):
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
-        report = load_gql('./servus/newReport.gql') % (str(exception), str(now), str(self._id))
+        report = load_gql('./servus/reportError.gql') % (str(exception), str(now), str(self._id))
         logger.info("error report: " + report)
         response = make_request(self.servus_address, report)
-        if not response['removeNode']['ok']:
+        if not response['reportError']['ok']:
             logger.info("bad response when trying to send an error report")
 
 
