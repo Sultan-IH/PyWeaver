@@ -67,8 +67,11 @@ def main():
         logger.info(f"terminated [{process.task}] thread")
         process.join()
 
+    # after we exit from all the threads we reset the event to no
+    stop_work_event.clear()
+    
+    # clear all pool connections
     conn_manager.on_exit()
-    logger.info("closed all pool connections")
 
     # most commonly reddit servers can't handle the load, so we just give them some time
     # (I am sure they are doing their best)
