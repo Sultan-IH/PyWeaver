@@ -1,9 +1,13 @@
-import logging, os, time, sys
+import sys
+import time
+
+import logging
+import os
+from multiprocessing.dummy import Queue, Event
+
 import RedditClient as rc
 import log_config  # when imported all the logging variables needed for other modules become available
-
-from multiprocessing.dummy import Queue, Event
-from DBClient import SubmissionStreamProcess, ConnectionPool, CommentStreamProcess
+from DBClient import SubmissionStreamProcess, ConnectionPool, CommentStreamProcess, StopWorkerException
 from servus.node import Node, wrap_in_process, IS_PRODUCTION
 
 PROGRAM_CONFIG = log_config.PROGRAM_CONFIG
@@ -22,9 +26,6 @@ node.get_resources('subreddits', num_subreddits)
 # functions send their progress metrics into the queue
 metrics_queue = Queue()
 
-# error queue, sends
-error_queue = Queue()
-
 # node runs metric collection from queue, same queue is shared among threads
 wrap_in_process(func=node.run_report_cycle, args=(metrics_queue,))
 
@@ -34,6 +35,10 @@ stop_work_event = Event()
 
 
 def main():
+    # on each iteration of the main we want a new clean error queue, in case there was more than one exception
+    # in the earlier process
+    error_queue = Queue()
+
     # collection of threads reaping posts and comments
     _processes = []
 
@@ -57,19 +62,15 @@ def main():
 
     # listening for an exception, clean up, repeat
     exception = error_queue.get()  # blocks thread until exception received
+    error_queue.empty()
     logger.info("received an exception " + str(exception))
     node.report_error(exception)
 
-    # clean up,
-    stop_work_event.set()  # causes all threads to exit
-
+    # clean up
     for process in _processes:
         logger.info(f"terminated [{process.task}] thread")
-        process.join()
+        process.interrupt(StopWorkerException)
 
-    # after we exit from all the threads we reset the event to no
-    stop_work_event.clear()
-    
     # clear all pool connections
     conn_manager.on_exit()
 

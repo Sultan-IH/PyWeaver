@@ -3,4 +3,5 @@ remote.yaml
 .idea
 *.pyc
 logs
+.ipynb_checkpoints
 .DS_Store
