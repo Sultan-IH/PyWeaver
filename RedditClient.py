@@ -1,8 +1,12 @@
-import praw, os
-from typing import Generator
+import logging
+import os
+import praw
 from multiprocessing.dummy import Queue
+from typing import Generator
 
 __reddit__ = None
+
+logger = logging.getLogger(__name__)
 
 
 def create_agent() -> praw.Reddit:
@@ -23,6 +27,8 @@ def stream_subreddit_comments(subname: str, error_queue: Queue) -> Generator:
             yield comment
 
     except Exception as e:
+        logger.warning(f"stream_subreddit_comments received an exception: {str(e)}")
+        yield e
         error_queue.put(str(e))
 
 
@@ -38,6 +44,8 @@ def stream_subreddit_submissions(subname: str, error_queue: Queue) -> Generator:
             yield submission
 
     except Exception as e:
+        logger.warning(f"stream_subreddit_submissions received an exception: {str(e)}")
+        yield e
         error_queue.put(str(e))
 
 
@@ -54,4 +62,5 @@ def feed_submission_comments(_id: str, error_queue: Queue) -> Generator:
             yield comment
 
     except Exception as e:
+        yield e
         error_queue.put(str(e))

@@ -1,10 +1,15 @@
-import requests, os, logging, atexit, schedule, time, yaml
+import atexit
+import logging
+import os
+import requests
+import schedule
+import time
 from datetime import datetime
 from multiprocessing.dummy import Process, Queue, Value
 
-logger = logging.getLogger(__name__)
+from env_config import IS_PRODUCTION
 
-IS_PRODUCTION = True if os.getenv("PRODUCTION") == 'TRUE' else False
+logger = logging.getLogger(__name__)
 
 
 class Node:

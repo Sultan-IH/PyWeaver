@@ -1,4 +1,3 @@
-import sys
 import time
 
 import logging
@@ -6,15 +5,11 @@ import os
 from multiprocessing.dummy import Queue, Event
 
 import RedditClient as rc
-import log_config  # when imported all the logging variables needed for other modules become available
-from DBClient import SubmissionStreamProcess, ConnectionPool, CommentStreamProcess, StopWorkerException
-from servus.node import Node, wrap_in_process, IS_PRODUCTION
-
-PROGRAM_CONFIG = log_config.PROGRAM_CONFIG
-
-if IS_PRODUCTION:
-    STDOUT_FILE = log_config.LOG_BASE + '.stdout'
-    sys.stdout = open(STDOUT_FILE, 'wt')
+from DBClient import ConnectionPool
+from InterruptableThread import StopWorkerException
+from PyWeaver.StreamProcesses import CommentStreamProcess, SubmissionStreamProcess
+from env_config import PROGRAM_CONFIG, IS_PRODUCTION
+from servus.node import Node, wrap_in_process
 
 logger = logging.getLogger(__name__)
 
@@ -67,10 +62,21 @@ def main():
     node.report_error(exception)
 
     # clean up
-    for process in _processes:
-        logger.info(f"terminated [{process.task}] thread")
-        process.interrupt(StopWorkerException)
+    stop_work_event.set()
+    time.sleep(3)  # give em some time to terminate
+    # check how many are alive and pop a cap
+    while True:
+        alive = [process for process in _processes if process.is_alive()]
+        if alive:
+            logger.info(f"live threads left {str([process.task for process in alive])}")
+            for process in alive:
+                process.interrupt(StopWorkerException)
+                logger.info(f"terminated [{process.task}] thread")
+            time.sleep(1)
+        else:
+            break
 
+    stop_work_event.clear()
     # clear all pool connections
     conn_manager.on_exit()
 

@@ -3,7 +3,7 @@
 #!/usr/bin/env bash
 
 # stuff that determines the behavior of the program
-cat ./pyweaver.env | while read line; do
+cat ./PyWeaver/pyweaver.env | while read line; do
     export $line
 done
 
