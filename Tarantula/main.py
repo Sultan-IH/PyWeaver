@@ -11,8 +11,8 @@ logger = logging.getLogger(__name__)
 
 node = Node(PROGRAM_CONFIG)
 
-PAUSE_DURATION = 30 * 60  # in seconds
-NUM_THREADS = 20 if IS_PRODUCTION else 3
+PAUSE_DURATION = 30 * 60 if IS_PRODUCTION else 3 * 60
+NUM_THREADS = 20 if IS_PRODUCTION else 10
 
 LOOKBACK = 1  # how many days to look back
 
@@ -27,9 +27,12 @@ logger.info("Tarantula started in " + ("production" if IS_PRODUCTION else "devel
 def main():
     rc.__reddit__ = rc.create_agent()
     conn_manager = db.ConnectionPool()
-
     error_queue = Queue()
-    control_process = UpdateControlProcess(conn_manager, error_queue, metrics_queue, PAUSE_DURATION, NUM_THREADS,
+    control_process = UpdateControlProcess(conn_manager,
+                                           error_queue,
+                                           metrics_queue,
+                                           PAUSE_DURATION,
+                                           NUM_THREADS,
                                            LOOKBACK)
     control_process.start()
 

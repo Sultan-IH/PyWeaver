@@ -11,7 +11,8 @@ IS_PRODUCTION = True if os.getenv("PRODUCTION") == 'TRUE' else False
 
 
 def get_config() -> dict:
-    with open('config.yaml') as file:
+    config_file_path = os.getenv("CONFIG_FILE_PATH")
+    with open(config_file_path) as file:
         try:
             config = yaml.load(file)
         except yaml.YAMLError as exc:

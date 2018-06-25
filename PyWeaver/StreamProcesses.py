@@ -18,6 +18,7 @@ class CommentStreamProcess(InterruptableThread):
 
     def __init__(self, task: str, cursor, error_queue: mp.Queue, metrics_queue: mp.Queue, stop_event: mp.Event):
         self.task = task
+        self._id = task
         self.cursor = cursor
         self._error_queue = error_queue
         self._metrics_queue = metrics_queue
@@ -29,10 +30,10 @@ class CommentStreamProcess(InterruptableThread):
         for comment in rc.stream_subreddit_comments(self.task, self._error_queue):
             if self._stop_event.is_set():
                 logger.info(f"{self.task} comment harvesting thread exiting")
-                break  # check if an exception has occurred that caused all threads to stop
+                return  # check if an exception has occurred that caused all threads to stop
             elif type(comment) == Exception:
-                # if there was an error in stream_subreddit_comments
-                break
+                return  # if there was an error in stream_subreddit_comments
+
             values = (comment.id, str(comment.author), comment.body, self.task,
                       comment.score, comment.created_utc, comment.parent_id, comment.id)
             try:
@@ -56,11 +57,11 @@ class SubmissionStreamProcess(InterruptableThread):
 
     def __init__(self, task: str, cursor, error_queue: mp.Queue, metrics_queue: mp.Queue, stop_event: mp.Event):
         self.task = task
+        self._id = task
         self.cursor = cursor
         self._error_queue = error_queue
         self._metrics_queue = metrics_queue
         self._stop_event = stop_event
-        # self.daemon = True needs more clarification
         super().__init__(target=self.run, args=())
 
     def run(self):
@@ -68,10 +69,10 @@ class SubmissionStreamProcess(InterruptableThread):
         for submission in rc.stream_subreddit_submissions(self.task, self._error_queue):
             if self._stop_event.is_set():
                 logger.info(f"{self.task} submission harvesting thread exiting")
-                break  # check if an exception has occurred that caused all threads to stop
+                return  # check if an exception has occurred that caused all threads to stop
             elif type(submission) == Exception:
                 # if there was an error in stream_subreddit_submission
-                break
+                return
             values = (submission.id, str(submission.author), self.task, submission.title,
                       submission.score, submission.num_comments, submission.created_utc, submission.selftext,
                       submission.permalink, submission.id)

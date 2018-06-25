@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-version=$(grep "version:" config.yaml | cut -c 10-)
+version=$(grep "version:" $CONFIG_FILE_PATH | cut -c 10-)
 echo "Building version number: " $version
-docker push ksula0155/pyweaver:$version
+docker push $DOCKER_REPO:$version

@@ -1,9 +1,9 @@
 import atexit
+import time
 import logging
 import os
 import requests
 import schedule
-import time
 from datetime import datetime
 from multiprocessing.dummy import Process, Queue, Value
 
