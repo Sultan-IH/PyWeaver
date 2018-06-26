@@ -3,7 +3,7 @@ import multiprocessing.dummy as mp
 import psycopg2 as pg
 
 import RedditClient as rc
-from InterruptableThread import InterruptableThread, StopWorkerException
+from InterruptableThread import InterruptableThread
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ class SubmissionUpdateProcess(InterruptableThread):
         task = self._task_queue.get()
         logger.info(f"thread [{self._id}]: updating scores from submission with id [{task}]")
         for comment in rc.feed_submission_comments(task, self._error_queue):
-            if self._stop_work_event.is_set() or type(comment) == Exception:
+            if self._stop_work_event.is_set() or comment == 'exception':
                 logger.info(f"{self._id} comment harvesting thread exiting")
                 # check if an exception has occurred that caused all threads to stop
                 # or if there was an error in stream_subreddit_comments
@@ -49,6 +49,7 @@ class SubmissionUpdateProcess(InterruptableThread):
         logger.info(f"thread [{self._id}]: tasks left: {self._task_queue.qsize()}")
         self._task_queue.task_done()
         if self._task_queue.unfinished_tasks == 0:
-            raise StopWorkerException('Finished all work')
+            logger.info(f"thread [{self._id}]: finished all work!!! returning")
+            return
         else:
             self.run()

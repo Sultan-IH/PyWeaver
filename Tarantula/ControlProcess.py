@@ -28,6 +28,7 @@ class UpdateControlProcess(InterruptableThread):
         self._error_queue = error_queue
         self._metrics_queue = metrics_queue
         self._daydelta = daydelta
+        self._stop_work_event = Event()
         self._conn_manager = conn_manager
         self.num_workers = num_workers
         self.workers = []
@@ -39,7 +40,6 @@ class UpdateControlProcess(InterruptableThread):
 
     def run(self):
         task_queue = Queue()
-        stop_work_event = Event()
         _cursor = next(self._conn_manager)
         query_submissions(_cursor, self._wall_clock, task_queue)
         _cursor.close()
@@ -48,14 +48,14 @@ class UpdateControlProcess(InterruptableThread):
         for i in range(self.num_workers):
             _cursor = next(self._conn_manager)
             worker = SubmissionUpdateProcess(i, _cursor, self._error_queue, self._metrics_queue, task_queue,
-                                             stop_work_event)
+                                             self._stop_work_event)
             worker.start()
             self.workers.append(worker)
 
         time.sleep(self._pause_period)
         logger.info("starting clean up")
         # check that all threads completed and that the task queue is empty
-        kill_thread_pool(stop_work_event, self.workers, pause=30, max_retry=3)
+        kill_thread_pool(self._stop_work_event, self.workers)
 
         if task_queue.unfinished_tasks != 0:
             logger.warning("not all tasks finished consider using more threads")
@@ -70,7 +70,6 @@ class UpdateControlProcess(InterruptableThread):
         self.run()
 
     def terminate(self, extype=StopWorkerException):
-        for worker in self.workers:
-            worker.interrupt(extype)
+        kill_thread_pool(self._stop_work_event, self.workers)
         logger.info("UpdateControlProcess terminated")
         self.interrupt(extype)

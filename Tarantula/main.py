@@ -13,7 +13,6 @@ node = Node(PROGRAM_CONFIG)
 
 PAUSE_DURATION = 30 * 60 if IS_PRODUCTION else 3 * 60
 NUM_THREADS = 20 if IS_PRODUCTION else 10
-
 LOOKBACK = 1  # how many days to look back
 
 metrics_queue = Queue()
