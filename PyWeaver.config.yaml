@@ -1,3 +1,6 @@
 logdir: ./logs/
 name: PyWeaver
+docker_repo: pyweaver
 version: 0.1.15
+log_volume: pyweaver_logs
+servers: [159.65.27.43, ec2-user@ec2-35-178-107-31.eu-west-2.compute.amazonaws.com]

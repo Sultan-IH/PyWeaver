@@ -38,6 +38,12 @@ root_logger = logging.getLogger('')
 root_logger.setLevel(logging.INFO)
 root_logger.addHandler(handler)
 
+
+def exception_handler(type, value, tb):
+    root_logger.exception("Uncaught exception: {0}".format(str(value)))
+
+
 if IS_PRODUCTION:
     STDOUT_FILE = LOG_BASE + '.stdout'
     sys.stdout = open(STDOUT_FILE, 'wt')
+    sys.excepthook = exception_handler

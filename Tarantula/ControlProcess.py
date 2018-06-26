@@ -54,6 +54,7 @@ class UpdateControlProcess(InterruptableThread):
 
         time.sleep(self._pause_period)
         logger.info("starting clean up")
+        self._conn_manager.on_exit()
         # check that all threads completed and that the task queue is empty
         kill_thread_pool(self._stop_work_event, self.workers)
 

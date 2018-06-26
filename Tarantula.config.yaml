@@ -1,3 +1,8 @@
+docker_repo: tarantula
+log_volume: pyweaver_logs
 logdir: ./logs/
 name: Tarantula
-version: 0.1.1
+servers:
+- 159.65.27.43
+- ec2-user@ec2-35-178-107-31.eu-west-2.compute.amazonaws.com
+version: 0.1.2

@@ -31,6 +31,7 @@ class SubmissionUpdateProcess(InterruptableThread):
         for comment in rc.feed_submission_comments(task, self._error_queue):
             if self._stop_work_event.is_set() or comment == 'exception':
                 logger.info(f"{self._id} comment harvesting thread exiting")
+                self._cursor.close()
                 # check if an exception has occurred that caused all threads to stop
                 # or if there was an error in stream_subreddit_comments
                 return
@@ -50,6 +51,7 @@ class SubmissionUpdateProcess(InterruptableThread):
         self._task_queue.task_done()
         if self._task_queue.unfinished_tasks == 0:
             logger.info(f"thread [{self._id}]: finished all work!!! returning")
+            self._cursor.close()
             return
         else:
             self.run()

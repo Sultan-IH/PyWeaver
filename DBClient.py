@@ -16,11 +16,11 @@ def create_conn_manager():
 
 
 class ConnectionPool:
-    def __init__(self):
+    def __init__(self, max_conns: int = 40):
         conn_params = (
             f"dbname={os.getenv('DB_NAME')} user={os.getenv('DB_USER')}"
             f" password={os.getenv('DB_PASSWORD')} host={os.getenv('DB_HOST')} ")
-        self.pool = ThreadedConnectionPool(1, 40, conn_params)
+        self.pool = ThreadedConnectionPool(1, max_conns, conn_params)
 
     def __iter__(self):
         return self
