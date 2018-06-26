@@ -28,11 +28,10 @@ class CommentStreamProcess(InterruptableThread):
     def run(self):
         logger.info("streaming and inserting comments from " + self.task)
         for comment in rc.stream_subreddit_comments(self.task, self._error_queue):
-            if self._stop_event.is_set():
+            if self._stop_event.is_set() or comment == 'exception':
                 logger.info(f"{self.task} comment harvesting thread exiting")
+                # if there was an error in stream_subreddit_comments
                 return  # check if an exception has occurred that caused all threads to stop
-            elif type(comment) == Exception:
-                return  # if there was an error in stream_subreddit_comments
 
             values = (comment.id, str(comment.author), comment.body, self.task,
                       comment.score, comment.created_utc, comment.parent_id, comment.id)
@@ -67,12 +66,10 @@ class SubmissionStreamProcess(InterruptableThread):
     def run(self):
         logger.info("streaming and inserting submissions from " + self.task)
         for submission in rc.stream_subreddit_submissions(self.task, self._error_queue):
-            if self._stop_event.is_set():
+            if self._stop_event.is_set() or submission == 'exception':
                 logger.info(f"{self.task} submission harvesting thread exiting")
+                # if there was an error in stream_subreddit_comments
                 return  # check if an exception has occurred that caused all threads to stop
-            elif type(submission) == Exception:
-                # if there was an error in stream_subreddit_submission
-                return
             values = (submission.id, str(submission.author), self.task, submission.title,
                       submission.score, submission.num_comments, submission.created_utc, submission.selftext,
                       submission.permalink, submission.id)

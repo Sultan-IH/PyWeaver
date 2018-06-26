@@ -83,7 +83,7 @@ class StopWorkerException(Exception):
 
 
 def kill_thread_pool(stop_work_event: mp.Event, pool: List[InterruptableThread], exctype=StopWorkerException,
-                     pause: int = 1, max_retry=0):
+                     pause: int = 30, max_retry=3):
     stop_work_event.set()
     time.sleep(3)  # give em some time to terminate
     num_try = 0
