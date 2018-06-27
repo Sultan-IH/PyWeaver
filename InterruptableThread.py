@@ -93,13 +93,13 @@ def kill_thread_pool(stop_work_event: mp.Event, pool: List[InterruptableThread],
         if alive:
             if num_try < max_retry:
                 num_try += 1
+                time.sleep(pause)
             else:
                 ids = str([thread._id for thread in alive])
-                logger.info(f"live threads left {ids}")
+                logger.info(f"live threads left {ids}, sending exceptions")
                 for thread in alive:
                     thread.interrupt(exctype)
-                    logger.info(f"sent StopWorkerException to [{thread._id}] thread")
-            time.sleep(pause)
+                time.sleep(0.1)
         else:
             logger.info("thread pool terminated")
             break
