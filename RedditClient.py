@@ -28,8 +28,8 @@ def stream_subreddit_comments(subname: str, error_queue: Queue) -> Generator:
 
     except Exception as e:
         logger.warning(f"stream_subreddit_comments received an exception: {str(e)}")
+        error_queue.put(e)
         yield 'exception'
-        error_queue.put(str(e))
 
 
 def stream_subreddit_submissions(subname: str, error_queue: Queue) -> Generator:
@@ -45,8 +45,8 @@ def stream_subreddit_submissions(subname: str, error_queue: Queue) -> Generator:
 
     except Exception as e:
         logger.warning(f"stream_subreddit_submissions received an exception: {str(e)}")
+        error_queue.put(e)
         yield 'exception'
-        error_queue.put(str(e))
 
 
 def feed_submission_comments(_id: str, error_queue: Queue) -> Generator:
@@ -62,5 +62,5 @@ def feed_submission_comments(_id: str, error_queue: Queue) -> Generator:
             yield comment
 
     except Exception as e:
+        error_queue.put(e)
         yield 'exception'
-        error_queue.put(str(e))

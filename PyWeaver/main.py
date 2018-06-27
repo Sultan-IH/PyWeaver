@@ -57,7 +57,6 @@ def main():
 
     # listening for an exception, clean up, repeat
     exception = error_queue.get()  # blocks thread until exception received
-    error_queue.empty()
     # log and report exception
     logger.info("received an exception " + str(exception))
     node.report_error(exception)

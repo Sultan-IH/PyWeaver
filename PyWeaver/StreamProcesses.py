@@ -37,7 +37,7 @@ class CommentStreamProcess(InterruptableThread):
                       comment.score, comment.created_utc, comment.parent_id, comment.id)
             try:
                 self.cursor.execute(self.sql_statement, values)
-            except (pg.IntegrityError, pg.OperationalError) as e:
+            except Exception as e:
                 logger.error("Error on executing sql: {0}".format(e))
                 self._error_queue.put(e)
             else:
@@ -75,7 +75,7 @@ class SubmissionStreamProcess(InterruptableThread):
                       submission.permalink, submission.id)
             try:
                 self.cursor.execute(self.sql_statement, values)
-            except (pg.IntegrityError, pg.OperationalError) as e:
+            except Exception as e:
                 logger.error("Error on executing sql: {0}".format(e))
                 self._error_queue.put(e)
             else:
