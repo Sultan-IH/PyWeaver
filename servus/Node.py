@@ -1,9 +1,9 @@
 import atexit
 import time
+
 import logging
 import os
 import requests
-import schedule
 from datetime import datetime
 from multiprocessing.dummy import Process, Queue, Value
 
@@ -61,58 +61,26 @@ class Node:
         if response['removeNode']['ok']:
             logger.info('Node died gracefully')
 
-    def _send_report(self, comment_count, post_count):
-        metrics = " <p>Posts Scraped: %d</p> <p>Comments Scraped: %d</p>" % (
-            post_count, comment_count)
+    def _report_metrics(self, html_metrics):
 
-        report = load_gql('./servus/newReport.gql') % (self._id, metrics)
+        report = load_gql('./servus/newReport.gql') % (self._id, html_metrics)
         response = make_request(self.servus_address, report)
-        logger.info("metrics report: " + report)
         if response['newReport']['ok']:
-            logger.info('sent an hourly report' + metrics)
+            logger.info('sent an hourly report' + report)
             self.post_count = 0
             self.comment_count = 0
         else:
             logger.info("bad response when trying to send a metric report")
 
-    def run_report_cycle(self):
-        schedule.every(self.report_interval).seconds.do(self._send_report)
-
-        def run():
-            while True:
-                schedule.run_pending(), time.sleep(1)
-
-        self.report_process = Process(target=run)
-        self.report_process.start()
-
-    def run_report_cycle(self, queue):
+    def run_report_cycle(self, report):
         time.sleep(self.report_interval)
-        comment_count, post_count = 0, 0
-        for _ in range(queue.qsize()):
-            item = queue.get()
-            if item == 'comment':
-                comment_count += 1
-            elif item == 'submission':
-                post_count += 1
         if IS_PRODUCTION:
-            self._send_report(comment_count, post_count)
+            metrics_html = report.make_html()
+            self._report_metrics(metrics_html)
         else:
-            print(f"""
-                num comments: {comment_count}
-                submission count: {post_count}
-            """)
-        self.run_report_cycle(queue)
-
-    def run_error_reports(self, error_queue: Queue):
-        """
-        not sure if needed as calling get() will remove the error from error_queue
-        if run in a separate thread, will create race conditions with main
-        :param error_queue: Queue
-        :return:
-        """
-        exception = error_queue.get()  # blocks until error is recieved
-        self._report_error(exception)
-        self.run_error_reports(error_queue)
+            metrics_str = report.make_str()
+            print(metrics_str)
+        self.run_report_cycle(report)
 
     def report_error(self, exception: Exception):
         now = datetime.now().strftime("%Y-%m-%d %H:%M")

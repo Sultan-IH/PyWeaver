@@ -43,7 +43,7 @@ class SubmissionUpdateProcess(InterruptableThread):
                 logger.error("Error on executing sql: {0}".format(e))
                 self._error_queue.put(e)
             else:
-                self._metrics_queue.put('upvote')
+                self._metrics_queue.put('score')
                 logger.info(f"thread [{self._id}]: updated a [{comment.id}] comment to [{comment.score}] upvotes")
 
         logger.info(f"thread [{self._id}]: finished with task [{task}]")

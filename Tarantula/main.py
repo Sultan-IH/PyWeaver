@@ -5,21 +5,22 @@ from multiprocessing.dummy import Queue
 import DBClient as db
 import RedditClient as rc
 from Tarantula.ControlProcess import UpdateControlProcess
+from Tarantula.Report import Report
 from env_config import PROGRAM_CONFIG, IS_PRODUCTION
-from servus.node import Node, wrap_in_process
+from servus.Node import Node, wrap_in_process
 
 logger = logging.getLogger(__name__)
 
 node = Node(PROGRAM_CONFIG)
-
 PAUSE_DURATION = 30 * 60 if IS_PRODUCTION else 3 * 60
 NUM_THREADS = os.getenv("NUM_THREADS") if os.getenv("NUM_THREADS") else 10
 LOOKBACK = 1  # how many days to look back
 MAX_CONNS = os.getenv("MAX_DB_CONNS") if os.getenv("MAX_DB_CONNS") else 15
 metrics_queue = Queue()
+report = Report(metrics_queue)
 
 # enable reporting for the node
-wrap_in_process(func=node.run_report_cycle, args=(metrics_queue,))
+wrap_in_process(func=node.run_report_cycle, args=(report,))
 
 logger.info("Tarantula started in " + ("production" if IS_PRODUCTION else "development") + " environment.")
 

@@ -7,9 +7,10 @@ from multiprocessing.dummy import Queue, Event
 import RedditClient as rc
 from DBClient import ConnectionPool
 from InterruptableThread import kill_thread_pool
+from PyWeaver.Report import Report
 from PyWeaver.StreamProcesses import CommentStreamProcess, SubmissionStreamProcess
 from env_config import PROGRAM_CONFIG, IS_PRODUCTION
-from servus.node import Node, wrap_in_process
+from servus.Node import Node, wrap_in_process
 
 logger = logging.getLogger(__name__)
 
@@ -20,9 +21,11 @@ node.get_resources('subreddits', num_subreddits)
 
 # functions send their progress metrics into the queue
 metrics_queue = Queue()
+# this class enables Node to report custom metrics
+report = Report(metrics_queue)
 
 # node runs metric collection from queue, same queue is shared among threads
-wrap_in_process(func=node.run_report_cycle, args=(metrics_queue,))
+wrap_in_process(func=node.run_report_cycle, args=(report,))
 
 logger.info("PyWeaver started in " + ("production" if IS_PRODUCTION else "development") + " environment.")
 

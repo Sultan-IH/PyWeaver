@@ -68,6 +68,7 @@ class UpdateControlProcess(InterruptableThread):
             lookback = datetime.now(tz=timezone.utc) - timedelta(days=self._daydelta)
             self._wall_clock = int(lookback.timestamp())
 
+        self._metrics_queue.put("cycle")
         self.run()
 
     def terminate(self, extype=StopWorkerException):
