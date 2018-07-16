@@ -5,3 +5,4 @@ remote.yaml
 logs
 .ipynb_checkpoints
 .DS_Store
+*.pem
