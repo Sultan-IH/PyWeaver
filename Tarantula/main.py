@@ -37,7 +37,6 @@ def main():
     node.report_error(exception)
 
     control_process.terminate()
-    conn_manager.on_exit()
     main()
 
 

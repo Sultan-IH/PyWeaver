@@ -74,7 +74,7 @@ class UpdateControlProcess(InterruptableThread):
         self.run()
 
     def terminate(self, extype=StopWorkerException):
-        kill_gthreads(self.workers)
+        kill_thread_pool(self.workers)
         self._conn_manager.on_exit()
         logger.info("UpdateControlProcess terminated")
         self.interrupt(extype)
