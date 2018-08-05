@@ -49,7 +49,7 @@ def stream_subreddit_submissions(subname: str, error_queue: Queue) -> Generator:
         yield 'exception'
 
 
-def feed_submission_comments(_id: str, error_queue: Queue, is_set: bool) -> Generator:
+def feed_submission_comments(_id: str, is_set: bool, error_queue: Queue = None) -> Generator:
     """
     :param _id: id of the submission in a subreddit
     :return: traverse breadth, first the comment tree (returns comments)
@@ -63,5 +63,5 @@ def feed_submission_comments(_id: str, error_queue: Queue, is_set: bool) -> Gene
             yield comment
     except Exception as e:
         logger.warning(f"feed_submission_comments received an exception: {str(e)}")
-        error_queue.put(e)
+        if error_queue is not None: error_queue.put(e)
         yield "stop"
