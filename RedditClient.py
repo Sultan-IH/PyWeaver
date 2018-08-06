@@ -65,3 +65,8 @@ def feed_submission_comments(_id: str, is_set: bool, error_queue: Queue = None) 
         logger.warning(f"feed_submission_comments received an exception: {str(e)}")
         if error_queue is not None: error_queue.put(e)
         yield "stop"
+
+def insert_submission():
+    pass
+def insert_comment():
+    pass

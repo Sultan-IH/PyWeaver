@@ -1,0 +1,10 @@
+FROM python:3
+
+
+COPY requirements.txt /Huntsman/
+RUN pip install --no-cache-dir -r /Huntsman/requirements.txt
+
+COPY . /Huntsman
+WORKDIR /Huntsman
+
+CMD [ "python","-m","Huntsman.main" ]
