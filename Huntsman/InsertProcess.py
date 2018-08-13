@@ -56,6 +56,7 @@ class SubmissionInsertProcess(InterruptableThread):
 
         except Exception as e:
             logger.error("Error on inserting a submission: {0}".format(e))
+            self._error_queue.put(str(e))
         else:
             logger.info(f"inserted [{task}] post with [{comment_count}] comments from [{self.sub_name}]")
 

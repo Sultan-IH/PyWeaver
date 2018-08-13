@@ -10,9 +10,6 @@ from servus.Node import Node
 
 logger = logging.getLogger(__name__)
 
-start, end = 1498867200, 1530403200
-subreddits = ['btc', 'BlockChain', 'NEO', 'altcoin', 'CryptoMarkets', 'ethtrader']
-
 rc.__reddit__ = rc.create_agent()
 
 node = Node(PROGRAM_CONFIG)
@@ -20,9 +17,10 @@ NUM_THREADS = int(os.getenv("NUM_THREADS")) if os.getenv("NUM_THREADS") else 12
 MAX_CONNS = os.getenv("MAX_DB_CONNS") if os.getenv("MAX_DB_CONNS") else 20
 metrics_queue = Queue()
 report = Report(metrics_queue)
-
+node.get_resources("subreddits", 6)
 # enable reporting for the node
 
+subreddits = ['btc', 'BlockChain', 'NEO', 'altcoin', 'CryptoMarkets', 'ethtrader']
 
 logger.info("Huntsman started in " + ("production" if IS_PRODUCTION else "development") + " environment.")
 
@@ -30,7 +28,8 @@ logger.info("Huntsman started in " + ("production" if IS_PRODUCTION else "develo
 def main():
     rc.__reddit__ = rc.create_agent()
     status_queue = Queue()
-    for sub_name in subreddits:
+    for sub_name in node.jobs[-1]['tasks']:
+
         control_process = InsertControlProcess(sub_name,
                                                status_queue,
                                                metrics_queue,
@@ -41,6 +40,7 @@ def main():
 
         if status != 'all clear':
             node.report_error(status)
+            control_process.terminate()
             main()  # restart
         else:
             html = report.make_html()

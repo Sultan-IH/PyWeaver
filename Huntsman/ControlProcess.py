@@ -39,6 +39,8 @@ class InsertControlProcess(InterruptableThread):
     def run(self):
         task_queue = Queue()
         self._conn_manager = db.ConnectionPool(max_conns=MAX_CONNS)
+        self.workers = []
+
         # somehow get the post ids
         ts = reap_submissions(self.start_ts, self.end_ts, self.task, task_queue)
         if ts == -1:
@@ -61,8 +63,11 @@ class InsertControlProcess(InterruptableThread):
             self.workers.append(worker)
 
         # wait until all done
-        while any(thread.isAlive() for thread in self.workers):
-            time.sleep(50)
+        while any(thread.is_alive() for thread in self.workers):
+            logger.info([thread.is_alive() for thread in self.workers])
+            time.sleep(20)
+
+        self.run()
 
     def terminate(self, extype=StopWorkerException):
         kill_thread_pool(self._stop_work_event, self.workers)
@@ -83,4 +88,4 @@ def reap_submissions(start, end, subreddit, task_queue: Queue, size=250):
         task_queue.put(item['id'])
     logger.info(f"reaped a [{len(data)}] submission batch from [{subreddit}].")
 
-    return latest + 1  # so we don't reap the same comment
+    return latest  # + 1 so we don't reap the same comment
