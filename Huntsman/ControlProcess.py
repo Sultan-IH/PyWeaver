@@ -66,7 +66,7 @@ class InsertControlProcess(InterruptableThread):
         while any(thread.is_alive() for thread in self.workers):
             logger.info([thread.is_alive() for thread in self.workers])
             time.sleep(20)
-
+        self._conn_manager.on_exit()
         self.run()
 
     def terminate(self, extype=StopWorkerException):

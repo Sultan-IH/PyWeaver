@@ -41,6 +41,7 @@ def main():
         if status != 'all clear':
             node.report_error(status)
             control_process.terminate()
+            logger.info("main routine got an error; restarting.")
             main()  # restart
         else:
             html = report.make_html()
