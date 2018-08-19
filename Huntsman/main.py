@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 rc.__reddit__ = rc.create_agent()
 
 node = Node(PROGRAM_CONFIG)
-NUM_THREADS = int(os.getenv("NUM_THREADS")) if os.getenv("NUM_THREADS") else 12
+NUM_THREADS = int(os.getenv("NUM_THREADS")) if os.getenv("NUM_THREADS") else 20 
 MAX_CONNS = os.getenv("MAX_DB_CONNS") if os.getenv("MAX_DB_CONNS") else 20
 metrics_queue = Queue()
 report = Report(metrics_queue)

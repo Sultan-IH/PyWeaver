@@ -4,7 +4,7 @@ import os
 from psycopg2.pool import ThreadedConnectionPool
 
 import RedditClient as rc
-from env_config import IS_PRODUCTION
+
 
 logger = logging.getLogger(__name__)
 
@@ -62,11 +62,4 @@ def insert_comment_dummy(args):
         print("[%s] comment in [%s]" % (comment.id, subname))
 
 
-def query_submissions(cursor, date: int, queue: mp.Queue):
-    sql_query = f"""
-                SELECT post_id FROM reddit_posts WHERE createdutc > {date} {'' if IS_PRODUCTION else 'LIMIT 100'}
-            """
 
-    cursor.execute(sql_query)
-    for post_id in cursor.fetchall():
-        queue.put(post_id[0])

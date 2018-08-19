@@ -2,4 +2,4 @@ docker_repo: huntsman
 log_volume: huntsman_logs
 logdir: ./logs/
 name: Huntsman
-version: 0.1.4
+version: 0.1.5

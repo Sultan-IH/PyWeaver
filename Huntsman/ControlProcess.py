@@ -34,6 +34,7 @@ class InsertControlProcess(InterruptableThread):
         self.num_workers = num_workers
         self.workers = []
         self.task = task
+        self.batch_num = 0
         super().__init__()
 
     def run(self):
@@ -51,9 +52,10 @@ class InsertControlProcess(InterruptableThread):
             self._status_queue.put('all clear')
             return
         else:
+            self.batch_num += 1
             self.start_ts = ts
 
-        logger.info(f"got a workload of {task_queue.qsize()} tasks")
+        logger.info(f"got a workload of {task_queue.qsize()} tasks; working on batch num [{self.batch_num}]")
 
         for i in range(self.num_workers):
             _cursor = next(self._conn_manager)
@@ -61,10 +63,11 @@ class InsertControlProcess(InterruptableThread):
                                              self._stop_work_event)
             worker.start()
             self.workers.append(worker)
-
         # wait until all done
-        while any(thread.is_alive() for thread in self.workers):
-            logger.info([thread.is_alive() for thread in self.workers])
+        while True:
+            alive_threads = [thread.is_alive() for thread in self.workers]
+            if not any alive_threads: break
+            logger.info(f"{[sum(alive_threads)] threads are alive}")
             time.sleep(20)
         self._conn_manager.on_exit()
         self.run()
